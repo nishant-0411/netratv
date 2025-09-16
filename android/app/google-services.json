@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "443020684283",
+    "project_id": "netratv-156da",
+    "storage_bucket": "netratv-156da.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443020684283:android:d5abf34738ad430cf9b95e",
+        "android_client_info": {
+          "package_name": "in.netratv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2UF0yznfgRifK-UXIUilydFlu_mHnN0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
