@@ -1,4 +1,4 @@
-package `in`.netratv.netratv
+package `in`.netratv
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -16,12 +16,11 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
 
-  String gender = ''; // No default selected
+  String gender = ''; 
   String verificationId = '';
   bool otpSent = false;
   bool isLoading = false;
 
-  // Validate inputs before sending OTP
   bool _validateInputs() {
     final name = nameController.text.trim();
     final age = ageController.text.trim();

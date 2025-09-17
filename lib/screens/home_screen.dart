@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<String> _titles = const [
     "Home",
-    "Colleges Near You",
+    "Colleges For You",
     "Community",
     "Chatbot",
     "Profile",
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Pass careerChoice to GoalsScreen dynamically
     _screens = [
       GoalsScreen(initialCareerChoice: widget.initialCareerChoice),
-      CollegeScreen(),
+      CollegeScreen(interest: widget.initialCareerChoice ?? "Unknown"),
       CommunityScreen(),
       ChatbotScreen(),
       ProfileScreen(),
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_titles[_selectedIndex]),
-          automaticallyImplyLeading: false, // remove back button
+          automaticallyImplyLeading: false, 
         ),
         body: _screens[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(

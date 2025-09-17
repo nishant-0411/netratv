@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'firebase_options.dart'; 
 
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
@@ -16,17 +17,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID",
-    ),
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Gemini.init(apiKey: "AIzaSyCTq1bUz9dAPWUwxLkUmV-ImPuFzt8Qkv4");
+  Gemini.init(apiKey: "AIzaSyArKRK8_cGz-Y3euTJ73yXtJr6JAaCVnfM");
 
   runApp(const MyApp());
 }
@@ -51,7 +45,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/community': (context) => const CommunityScreen(),
         '/chatbot': (context) => const ChatbotScreen(),
-        '/colleges': (context) => const CollegeScreen(),
+        '/colleges': (context) => const CollegeScreen(interest: "Unknown"),
       },
     );
   }

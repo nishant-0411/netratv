@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb; // to detect web
+import 'package:flutter/foundation.dart' show kIsWeb; 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -18,30 +18,58 @@ class _LoginScreenState extends State<LoginScreen> {
   bool otpSent = false;
   bool isLoading = false;
 
-  Future<void> _sendOtp() async {
-    setState(() => isLoading = true);
+Future<void> _sendOtp() async {
+setState(() => isLoading = true);
 
-    if (kIsWeb) {
-      await Future.delayed(const Duration(seconds: 1));
-      setState(() {
-        otpSent = true;
-        isLoading = false;
-      });
-    } else {
-      // Real mobile Firebase OTP logic
-      // Place your original Firebase code here if needed
+  if (kIsWeb) {
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      otpSent = true;
+      isLoading = false;
+    });
+  } else {
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: "+91${phoneController.text.trim()}",
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.message ?? "Verification failed")),
+          );
+          setState(() => isLoading = false);
+        },
+        codeSent: (String verId, int? resendToken) {
+          setState(() {
+            verificationId = verId;
+            otpSent = true;
+            isLoading = false;
+          });
+        },
+        codeAutoRetrievalTimeout: (String verId) {
+          verificationId = verId;
+        },
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to send OTP: $e")),
+      );
+      setState(() => isLoading = false);
     }
   }
+}
+
 
   Future<void> _verifyOtp() async {
   setState(() => isLoading = true);
 
   if (kIsWeb) {
-    // On web, just navigate to QuizScreen
     await Future.delayed(const Duration(seconds: 1));
     setState(() => isLoading = false);
 
-    // Replace the current screen completely
     Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     
     // Or if you want to clear the stack completely:
