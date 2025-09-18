@@ -24,6 +24,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
   void initState() {
     super.initState();
     _loadTodos();
+    _loadRoadmap();
 
     if (widget.initialCareerChoice != null) {
       _generateRoadmap(widget.initialCareerChoice!);
@@ -47,6 +48,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
   Future<void> _saveTodos() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('goals_list', jsonEncode(_todos));
+  }
+
+  Future<void> _loadRoadmap() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedRoadmap = prefs.getString('last_roadmap');
+    if (savedRoadmap != null) {
+      setState(() => _roadmap = savedRoadmap);
+    }
   }
 
   void _addTodo() {
@@ -78,32 +87,49 @@ class _GoalsScreenState extends State<GoalsScreen> {
       _loadingRoadmap = true;
     });
 
+    final prefs = await SharedPreferences.getInstance();
+    final cachedKey = 'roadmap_$career'; // unique key per career
+    final cachedRoadmap = prefs.getString(cachedKey);
+
+    if (cachedRoadmap != null) {
+      // ✅ Use cached roadmap
+      setState(() {
+        _roadmap = cachedRoadmap;
+        _loadingRoadmap = false;
+      });
+      return;
+    }
+
     final prompt = """
-# To Become a $career
+  # To Become a $career
 
-**Step-by-step roadmap:**
-1. Start with foundational education.
-2. Gain practical experience and projects.
-3. Build a portfolio and resume.
-4. Apply for internships/jobs.
-5. Continuous learning and upskilling.
+  **Step-by-step roadmap:**
+  1. Start with foundational education.
+  2. Gain practical experience and projects.
+  3. Build a portfolio and resume.
+  4. Apply for internships/jobs.
+  5. Continuous learning and upskilling.
 
-**Recommended Resources:**
-- [YouTube tutorials](https://www.youtube.com)
-- [Online courses](https://www.coursera.org)
-- [Books & References](https://www.amazon.com)
-- Practical projects and exercises
-
-""";
+  **Recommended Resources:**
+  - [YouTube tutorials](https://www.youtube.com)
+  - [Online courses](https://www.coursera.org)
+  - [Books & References](https://www.amazon.com)
+  - Practical projects and exercises
+  """;
 
     try {
       final response = await Gemini.instance.prompt(parts: [
         Part.text(prompt),
       ]);
+      final result = response?.output ?? "No response from Gemini.";
+
       setState(() {
-        _roadmap = response?.output ?? "No response from Gemini.";
+        _roadmap = result;
         _loadingRoadmap = false;
       });
+
+      await prefs.setString(cachedKey, result);
+
     } catch (e) {
       setState(() {
         _roadmap = "Failed to generate roadmap. Please try again.";
@@ -112,11 +138,16 @@ class _GoalsScreenState extends State<GoalsScreen> {
     }
   }
 
+
   void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +166,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
           Expanded(
             child: TabBarView(
               children: [
-                // ------------------- TO-DO -------------------
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -220,8 +250,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     ],
                   ),
                 ),
-
-                // ------------------- ROADMAP & RESOURCES -------------------
                 _loadingRoadmap
                     ? const Center(child: CircularProgressIndicator())
                     : SingleChildScrollView(

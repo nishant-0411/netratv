@@ -88,7 +88,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     _loadMessages();
   }
 
-  /// 🔄 Load chat history from local storage
+  //Load chat history from local storage
   Future<void> _loadMessages() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString("chat_history");
@@ -160,9 +160,9 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          /// Chat UI
           DashChat(
             currentUser: _currentUser,
             onSend: _sendMessage,
@@ -170,9 +170,10 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             typingUsers: _isLoading ? [_botUser] : [],
             messageOptions: MessageOptions(
               showTime: true,
-              containerColor: Colors.blueAccent,
-              currentUserContainerColor: Colors.green,
-              textColor: Colors.white,
+              containerColor: const Color.fromARGB(255, 232, 232, 232), // bot message bubble
+              currentUserContainerColor: const Color.fromARGB(255, 185, 185, 185), // user bubble
+              textColor: Colors.black87, // bot text
+              currentUserTextColor: Colors.black87, // user text
               messageTextBuilder: (message, previous, next) {
                 final isBot = message.user.id == _botUser.id;
                 final isLatestBot =
@@ -189,19 +190,16 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     style: const TextStyle(fontSize: 16, color: Colors.black87),
                   );
                 }
-
                 return Text(
                   message.text,
                   style: TextStyle(
                     fontSize: 16,
-                    color: isBot ? Colors.black87 : Colors.white,
+                    color: isBot ? Colors.black87 : Colors.black87,
                   ),
                 );
               },
             ),
           ),
-
-          /// Delete button at top-right
           Positioned(
             top: 16,
             right: 16,

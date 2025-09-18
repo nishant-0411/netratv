@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/college_service.dart';
 
 class CollegeScreen extends StatefulWidget {
-  final String interest;
-  const CollegeScreen({super.key, required this.interest});
+  const CollegeScreen({super.key});
 
   @override
   State<CollegeScreen> createState() => _CollegeScreenState();
@@ -14,15 +14,26 @@ class _CollegeScreenState extends State<CollegeScreen> {
   List<Map<String, dynamic>> _colleges = [];
   bool _isLoading = true;
   String _source = "";
+  String _interest = "";
 
   @override
   void initState() {
     super.initState();
-    _loadColleges();
+    _loadInterestAndColleges();
   }
 
-  Future<void> _loadColleges() async {
-    final data = await _collegeService.getTopColleges(option: widget.interest);
+  Future<void> _loadInterestAndColleges() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedInterest = prefs.getString('selected_interest') ?? "";
+    if (savedInterest.isEmpty) {
+      setState(() {
+        _isLoading = false;
+        _interest = "Unknown";
+      });
+      return;
+    }
+    _interest = savedInterest;
+    final data = await _collegeService.getTopColleges(option: _interest);
     setState(() {
       _colleges = List<Map<String, dynamic>>.from(data["top_colleges"] ?? []);
       _source = data["source"] ?? "";
@@ -33,9 +44,7 @@ class _CollegeScreenState extends State<CollegeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Top Colleges - ${widget.interest}"),
-      ),
+      backgroundColor: Colors.white,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _colleges.isEmpty

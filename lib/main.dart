@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'firebase_options.dart'; 
+import 'screens/pre_quiz_intro_screen.dart';
 
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
@@ -20,7 +21,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Gemini.init(apiKey: "AIzaSyArKRK8_cGz-Y3euTJ73yXtJr6JAaCVnfM");
+  Gemini.init(apiKey: "AIzaSyBndaiTzP5ugMc9iVoMm9HKxpP0rQoLKTs");
 
   runApp(const MyApp());
 }
@@ -43,9 +44,10 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignupScreen(),
         '/quiz': (context) => const QuizScreen(),
         '/home': (context) => const HomeScreen(),
-        '/community': (context) => const CommunityScreen(),
+        '/community': (context) => CommunityScreen(interests: ['General']),
         '/chatbot': (context) => const ChatbotScreen(),
-        '/colleges': (context) => const CollegeScreen(interest: "Unknown"),
+        '/colleges': (context) => const CollegeScreen(),
+        '/prequiz': (context) => const PreQuizIntroScreen(),
       },
     );
   }

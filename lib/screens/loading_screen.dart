@@ -86,7 +86,7 @@ class _LoadingScreenState extends State<LoadingScreen>
               height: 220,
               repeat: true,
             ),
-            const SizedBox(height: 15), // Reduced gap
+            const SizedBox(height: 15),
             ScaleTransition(
               scale: _pulseAnimation,
               child: Text(
@@ -94,7 +94,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF333333), // Dark grey/blackish
+                  color: Color(0xFF333333),
                 ),
                 textAlign: TextAlign.center,
               ),

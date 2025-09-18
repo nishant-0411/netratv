@@ -6,8 +6,7 @@ import 'chatbot_screen.dart';
 import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String? initialCareerChoice; // receives careerChoice from LoadingScreen
-
+  final String? initialCareerChoice; 
   const HomeScreen({super.key, this.initialCareerChoice});
 
   @override
@@ -29,12 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Pass careerChoice to GoalsScreen dynamically
     _screens = [
       GoalsScreen(initialCareerChoice: widget.initialCareerChoice),
-      CollegeScreen(interest: widget.initialCareerChoice ?? "Unknown"),
-      CommunityScreen(),
+      CollegeScreen(),
+      CommunityScreen(
+      interests: widget.initialCareerChoice != null
+          ? [widget.initialCareerChoice!]
+          : ['General'],
+      ),
       ChatbotScreen(),
       ProfileScreen(),
     ];
@@ -43,14 +44,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false, // disable Android back button
+      onWillPop: () async => false,
       child: Scaffold(
+        backgroundColor: const Color(0xFFF9F9F9),
         appBar: AppBar(
-          title: Text(_titles[_selectedIndex]),
-          automaticallyImplyLeading: false, 
+        title: Text(
+          _titles[_selectedIndex],
+          style: const TextStyle(
+            fontWeight: FontWeight.bold, 
+            fontSize: 20,
+          ),
         ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87, 
+        elevation: 1,
+      ),
         body: _screens[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
           currentIndex: _selectedIndex,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.blue,

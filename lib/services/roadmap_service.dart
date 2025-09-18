@@ -2,8 +2,6 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 
 class RoadmapService {
   final Gemini _gemini = Gemini.instance;
-
-  /// Get career roadmap & resources from Gemini
   Future<String> getRoadmap(String career) async {
     try {
       final prompt = """

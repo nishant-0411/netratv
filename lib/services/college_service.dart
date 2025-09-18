@@ -221,7 +221,6 @@ class CollegeService {
     ],
   };
 
-  /// Get top colleges for an option
   Future<Map<String, dynamic>> getTopColleges({required String option}) async {
     final category = optionToCategory[option];
 
@@ -229,12 +228,10 @@ class CollegeService {
       return {"top_colleges": [], "source": "mapping_not_found"};
     }
 
-    // ✅ First check static data
     if (_staticData.containsKey(category)) {
       return {"top_colleges": _staticData[category], "source": "static"};
     }
 
-    // ✅ Fallback empty
     return {"top_colleges": [], "source": "not_available"};
   }
 }

@@ -15,14 +15,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Animated text sequence
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
                 child: showQuestion
@@ -30,7 +29,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         "Do you already have an account?",
                         key: const ValueKey('question'),
                         style: const TextStyle(
-                          color: Colors.white70,
+                          color: Colors.black87, // changed text color to dark
                           fontSize: 22,
                         ),
                         textAlign: TextAlign.center,
@@ -40,7 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         child: DefaultTextStyle(
                           style: const TextStyle(
                             fontSize: 28.0,
-                            color: Colors.white,
+                            color: Colors.black, // changed text color to black
                             fontWeight: FontWeight.bold,
                           ),
                           child: AnimatedTextKit(
@@ -52,9 +51,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               ),
                             ],
                             onFinished: () {
-                              // Show question after welcome animation
                               setState(() => showQuestion = true);
-                              // Delay showing options
                               Future.delayed(const Duration(seconds: 1), () {
                                 setState(() => showOptions = true);
                               });
@@ -64,7 +61,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
               ),
               const SizedBox(height: 30),
-              // Options buttons (Login / Signup)
               AnimatedOpacity(
                 opacity: showOptions ? 1.0 : 0.0,
                 duration: const Duration(milliseconds: 800),
