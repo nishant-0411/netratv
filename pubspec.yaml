@@ -34,14 +34,11 @@ dependencies:
   flutter_markdown: ^0.7.0
   firebase_core: ^4.1.0
   firebase_auth: ^6.0.2
-  animated_text_kit: ^4.2.2   # latest stable
+  animated_text_kit: ^4.2.2   
   shared_preferences: ^2.2.2
   cloud_firestore: ^6.0.1
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_dotenv: ^5.1.0
-  flutter_gemini: ^3.0.0
   dash_chat_2: ^0.0.21
   lottie: ^2.7.0
   url_launcher: ^6.0.9
@@ -49,11 +46,14 @@ dependencies:
   http: ^1.1.0
   xml: ^6.6.1
   html_unescape: ^2.0.0
+  flutter_gemini: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.13.1
  
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -76,7 +76,10 @@ flutter:
     - assets/animations/pre_quiz.json
     - assets/animations/data.json
 
-
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
   # assets:
   #   - assets/profile.jpg
 

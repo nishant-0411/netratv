@@ -1,7 +1,9 @@
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'dart:developer';
 
 class RoadmapService {
   final Gemini _gemini = Gemini.instance;
+
   Future<String> getRoadmap(String career) async {
     try {
       final prompt = """
@@ -20,6 +22,7 @@ class RoadmapService {
       return response?.output ??
           "⚠️ No roadmap generated. Try a different career keyword.";
     } catch (e) {
+      log("❌ RoadmapService error: $e");
       return "❌ Error fetching roadmap: $e";
     }
   }

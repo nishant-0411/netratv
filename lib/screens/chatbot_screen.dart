@@ -72,14 +72,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   final ChatUser _botUser = ChatUser(
     id: "bot",
-    firstName: "Gemini",
+    firstName: "Sahayak",
     profileImage: "https://cdn-icons-png.flaticon.com/512/4712/4712109.png",
   );
 
   final List<ChatMessage> _messages = [];
   final ChatService _chatService = ChatService();
   bool _isLoading = false;
-
   final Set<String> _typedMessages = {};
 
   @override
@@ -88,7 +87,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     _loadMessages();
   }
 
-  //Load chat history from local storage
+  // Load chat history from local storage
   Future<void> _loadMessages() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString("chat_history");
@@ -122,6 +121,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       _messages.insert(0, message);
       _isLoading = true;
     });
+
     await _saveMessages();
 
     final history = _messages
@@ -145,6 +145,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       _messages.insert(0, botMessage);
       _isLoading = false;
     });
+
     await _saveMessages();
   }
 
@@ -170,10 +171,10 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             typingUsers: _isLoading ? [_botUser] : [],
             messageOptions: MessageOptions(
               showTime: true,
-              containerColor: const Color.fromARGB(255, 232, 232, 232), // bot message bubble
-              currentUserContainerColor: const Color.fromARGB(255, 185, 185, 185), // user bubble
-              textColor: Colors.black87, // bot text
-              currentUserTextColor: Colors.black87, // user text
+              containerColor: const Color.fromARGB(255, 232, 232, 232), // bot
+              currentUserContainerColor: const Color.fromARGB(255, 185, 185, 185), // user
+              textColor: Colors.black87,
+              currentUserTextColor: Colors.black87,
               messageTextBuilder: (message, previous, next) {
                 final isBot = message.user.id == _botUser.id;
                 final isLatestBot =
@@ -190,6 +191,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     style: const TextStyle(fontSize: 16, color: Colors.black87),
                   );
                 }
+
                 return Text(
                   message.text,
                   style: TextStyle(

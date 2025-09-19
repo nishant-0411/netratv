@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
+import 'dart:developer';
 
 class GoalsScreen extends StatefulWidget {
   final String? initialCareerChoice;
@@ -92,7 +93,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
     final cachedRoadmap = prefs.getString(cachedKey);
 
     if (cachedRoadmap != null) {
-      // ✅ Use cached roadmap
       setState(() {
         _roadmap = cachedRoadmap;
         _loadingRoadmap = false;
@@ -101,26 +101,27 @@ class _GoalsScreenState extends State<GoalsScreen> {
     }
 
     final prompt = """
-  # To Become a $career
+# To Become a $career
 
-  **Step-by-step roadmap:**
-  1. Start with foundational education.
-  2. Gain practical experience and projects.
-  3. Build a portfolio and resume.
-  4. Apply for internships/jobs.
-  5. Continuous learning and upskilling.
+**Step-by-step roadmap:**
+1. Start with foundational education.
+2. Gain practical experience and projects.
+3. Build a portfolio and resume.
+4. Apply for internships/jobs.
+5. Continuous learning and upskilling.
 
-  **Recommended Resources:**
-  - [YouTube tutorials](https://www.youtube.com)
-  - [Online courses](https://www.coursera.org)
-  - [Books & References](https://www.amazon.com)
-  - Practical projects and exercises
-  """;
+**Recommended Resources:**
+- [YouTube tutorials](https://www.youtube.com)
+- [Online courses](https://www.coursera.org)
+- [Books & References](https://www.amazon.com)
+- Practical projects and exercises
+""";
 
     try {
-      final response = await Gemini.instance.prompt(parts: [
-        Part.text(prompt),
-      ]);
+      final response = await Gemini.instance.prompt(
+        parts: [Part.text(prompt)],
+      );
+
       final result = response?.output ?? "No response from Gemini.";
 
       setState(() {
@@ -129,15 +130,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
       });
 
       await prefs.setString(cachedKey, result);
-
     } catch (e) {
+      log("❌ Error generating roadmap: $e");
       setState(() {
         _roadmap = "Failed to generate roadmap. Please try again.";
         _loadingRoadmap = false;
       });
     }
   }
-
 
   void _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -147,7 +147,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
       throw 'Could not launch $url';
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
