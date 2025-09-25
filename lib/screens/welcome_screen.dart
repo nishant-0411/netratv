@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'signup_role_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -75,7 +76,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               backgroundColor: Colors.blueAccent,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 15),
+                                horizontal: 50,
+                                vertical: 15,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -85,13 +88,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           const SizedBox(height: 15),
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/signup');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const SignupRoleScreen(),
+                                ),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.greenAccent.shade700,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 15),
+                                horizontal: 50,
+                                vertical: 15,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

@@ -3,10 +3,11 @@ import 'goals_screen.dart';
 import 'colleges_screen.dart';
 import 'community_screen.dart';
 import 'chatbot_screen.dart';
+import 'mentors_screen.dart';
 import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String? initialCareerChoice; 
+  final String? initialCareerChoice;
   const HomeScreen({super.key, this.initialCareerChoice});
 
   @override
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Home",
     "Colleges For You",
     "Community",
+    "Mentors",
     "Chatbot",
     "Profile",
   ];
@@ -32,10 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
       GoalsScreen(initialCareerChoice: widget.initialCareerChoice),
       CollegeScreen(),
       CommunityScreen(
-      interests: widget.initialCareerChoice != null
-          ? [widget.initialCareerChoice!]
-          : ['General'],
+        interests: widget.initialCareerChoice != null
+            ? [widget.initialCareerChoice!]
+            : ['General'],
       ),
+      const MentorsScreen(),
       ChatbotScreen(),
       ProfileScreen(),
     ];
@@ -48,18 +51,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: const Color(0xFFF9F9F9),
         appBar: AppBar(
-        title: Text(
-          _titles[_selectedIndex],
-          style: const TextStyle(
-            fontWeight: FontWeight.bold, 
-            fontSize: 20,
+          title: Text(
+            _titles[_selectedIndex],
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black87,
+          elevation: 1,
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87, 
-        elevation: 1,
-      ),
         body: _screens[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
@@ -74,8 +74,18 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.flag), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.school), label: "Colleges"),
-            BottomNavigationBarItem(icon: Icon(Icons.people), label: "Community"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: "Colleges",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: "Community",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.workspace_premium),
+              label: "Mentors",
+            ),
             BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chatbot"),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ],
