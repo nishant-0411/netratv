@@ -10,8 +10,10 @@ class ProfileScreen extends StatelessWidget {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return null;
 
-    final snapshot =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
 
     return snapshot.data();
   }
@@ -40,87 +42,145 @@ class ProfileScreen extends StatelessWidget {
           }
 
           final user = snapshot.data!;
+          final photo = user['photoUrl'];
+          final name = user['name'] ?? 'Unknown User';
+          final bio = user['bio'] ?? "Excited to learn new things every day!";
+          final email = user['email'] ?? 'No email';
+          final phone = user['phone'] ?? 'No phone';
+          final interests = user['interests'] != null
+              ? List<String>.from(user['interests'])
+              : <String>[];
+
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                CircleAvatar(
-                  radius: 60,
-                  backgroundImage: user['photoUrl'] != null
-                      ? NetworkImage(user['photoUrl'])
-                      : const AssetImage("assets/profile.jpg") as ImageProvider,
+                Container(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF00838F), Color(0xFF26C6DA)],
+                    ),
+                  ),
+                  child: SafeArea(
+                    bottom: false,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 16),
+                        CircleAvatar(
+                          radius: 52,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 48,
+                            backgroundImage: photo != null
+                                ? NetworkImage(photo)
+                                : const AssetImage("assets/profile.jpg")
+                                      as ImageProvider,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          name,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            bio,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  user['name'] ?? 'Unknown User',
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  user['bio'] ?? "Excited to learn new things every day!",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
-                ),
-                const SizedBox(height: 20),
-                const Divider(thickness: 1),
-                const Text(
-                        "Contact me",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.email, color: Colors.redAccent),
-                  title: Text(user['email'] ?? 'No email'),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.phone, color: Colors.green),
-                  title: Text(user['phone'] ?? 'No phone'),
-                ),
-
-                const Divider(thickness: 1),
-                const SizedBox(height: 8),
-
-                // Interests
-                Align(
-                  alignment: Alignment.centerLeft,
+                Padding(
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Card(
+                        elevation: 1,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: const Icon(
+                                Icons.email,
+                                color: Colors.redAccent,
+                              ),
+                              title: Text(email),
+                            ),
+                            const Divider(height: 1),
+                            ListTile(
+                              leading: const Icon(
+                                Icons.phone,
+                                color: Colors.green,
+                              ),
+                              title: Text(phone),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
                         "Interests",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        children: (user['interests'] != null
-                                ? List<String>.from(user['interests'])
-                                : <String>[])
-                            .map((interest) => Chip(
-                                  label: Text(interest),
-                                  backgroundColor: Colors.greenAccent.shade100,
-                                ))
-                            .toList(),
+                      interests.isEmpty
+                          ? const Text("No interests added yet")
+                          : Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: interests
+                                  .map(
+                                    (interest) => Chip(
+                                      label: Text(interest),
+                                      backgroundColor:
+                                          Colors.greenAccent.shade100,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _logout(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: const Icon(Icons.logout),
+                          label: const Text('Logout'),
+                        ),
                       ),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 20),
-
-                ListTile(
-                  leading: const Icon(Icons.logout, color: Colors.redAccent),
-                  title: const Text('Logout'),
-                  onTap: () => _logout(context),
-                  tileColor: Colors.red.shade50,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                const SizedBox(height: 20),
               ],
             ),
           );
