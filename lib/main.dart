@@ -13,6 +13,8 @@ import 'screens/home_screen.dart';
 import 'screens/community_screen.dart';
 import 'screens/chatbot_screen.dart';
 import 'screens/colleges_screen.dart';
+import 'screens/mentor_chat_screen.dart';
+import 'screens/community_group_chat_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +23,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Gemini.init(apiKey: "AIzaSyBYvS7L6XgjWRXF9vstFtBf9U7lIb3yaOI");
+  Gemini.init(apiKey: "AIzaSyBtAmvGBKCjMEGMIiFpil3pbPnieNu8gEo");
 
   runApp(const MyApp());
 }

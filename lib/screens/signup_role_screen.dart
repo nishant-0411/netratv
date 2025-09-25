@@ -18,9 +18,9 @@ class SignupRoleScreen extends StatelessWidget {
               icon: Icons.school,
               title: 'Student',
               subtitle: 'Get guidance, roadmaps, scholarships',
-              onTap: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const SignupScreen())),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SignupScreen()),
+              ),
             ),
             const SizedBox(height: 16),
             _RoleCard(
@@ -28,7 +28,9 @@ class SignupRoleScreen extends StatelessWidget {
               title: 'Mentor',
               subtitle: 'Help students, answer doubts, share pathways',
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const MentorSignupScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const SignupScreen(redirectToMentorSignup: true),
+                ),
               ),
             ),
           ],
@@ -36,6 +38,7 @@ class SignupRoleScreen extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class _RoleCard extends StatelessWidget {

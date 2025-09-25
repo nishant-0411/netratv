@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'signup_screen.dart';
+import 'mentor_dashboard_screen.dart';
 
 class MentorSignupScreen extends StatefulWidget {
   const MentorSignupScreen({super.key});
@@ -34,13 +36,11 @@ class _MentorSignupScreenState extends State<MentorSignupScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isSubmitting = true);
     try {
-      final uid = FirebaseAuth.instance.currentUser?.uid;
+      String? uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Please login first')));
-        setState(() => _isSubmitting = false);
-        return;
+        // Create a lightweight account so mentors can proceed immediately
+        final cred = await FirebaseAuth.instance.signInAnonymously();
+        uid = cred.user?.uid;
       }
 
       await FirebaseFirestore.instance.collection('mentors').doc(uid).set({
@@ -60,7 +60,7 @@ class _MentorSignupScreenState extends State<MentorSignupScreen> {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        MaterialPageRoute(builder: (_) => const MentorDashboardScreen()),
         (route) => false,
       );
     } catch (e) {

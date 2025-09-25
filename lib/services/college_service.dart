@@ -33,7 +33,7 @@ class CollegeService {
     "App Developer": "engineering",
   };
 
-  /// Static college data
+  /// Static college data (categorized)
   static final Map<String, List<Map<String, dynamic>>> _staticData = {
     "engineering": [
       {
@@ -81,6 +81,7 @@ class CollegeService {
         "exam": "BITSAT",
       },
     ],
+
     "medical": [
       {
         "name": "AIIMS Delhi",
@@ -127,6 +128,7 @@ class CollegeService {
         "exam": "NEET-UG",
       },
     ],
+
     "law": [
       {
         "name": "NLSIU Bangalore",
@@ -173,6 +175,7 @@ class CollegeService {
         "exam": "CLAT",
       },
     ],
+
     "commerce": [
       {
         "name": "Shri Ram College of Commerce (SRCC)",
@@ -219,8 +222,57 @@ class CollegeService {
         "exam": "CUET / CET",
       },
     ],
+
+    /// 🟦 Colleges in Bhopal (Top Colleges Near You)
+    "bhopal": [
+      {
+        "name": "MANIT Bhopal",
+        "type": "government",
+        "country": "India",
+        "address": "Link Road Number 3, Bhopal, MP",
+        "phone": "+91-755-4051000",
+        "email": "registrar@manit.ac.in",
+        "website": "https://www.manit.ac.in",
+        "admission_info": "JEE Main",
+        "exam": "JEE Main",
+      },
+      {
+        "name": "IIIT Bhopal",
+        "type": "government",
+        "country": "India",
+        "address": "Bhopal, Madhya Pradesh",
+        "phone": "+91-755-4051950",
+        "email": "info@iiitbhopal.ac.in",
+        "website": "https://iiitbhopal.ac.in",
+        "admission_info": "JEE Main",
+        "exam": "JEE Main",
+      },
+      {
+        "name": "LNCT Bhopal",
+        "type": "private",
+        "country": "India",
+        "address": "Koh-e-Fiza, Bhopal, MP",
+        "phone": "+91-755-4049666",
+        "email": "info@lnct.ac.in",
+        "website": "https://www.lnct.ac.in",
+        "admission_info": "JEE / MP CET",
+        "exam": "JEE / MP CET",
+      },
+      {
+        "name": "Oriental Institute of Science & Technology",
+        "type": "private",
+        "country": "India",
+        "address": "Raisen Road, Bhopal, MP",
+        "phone": "+91-755-2735595",
+        "email": "info@oriental.ac.in",
+        "website": "https://www.oriental.ac.in",
+        "admission_info": "JEE / MP CET",
+        "exam": "JEE / MP CET",
+      },
+    ],
   };
 
+  /// 🧠 Get top colleges based on user's career option
   Future<Map<String, dynamic>> getTopColleges({required String option}) async {
     final category = optionToCategory[option];
 
@@ -233,5 +285,13 @@ class CollegeService {
     }
 
     return {"top_colleges": [], "source": "not_available"};
+  }
+
+  /// 📍 Get top colleges near you (e.g., Bhopal)
+  Future<Map<String, dynamic>> getTopCollegesNearYou({String city = "bhopal"}) async {
+    if (_staticData.containsKey(city)) {
+      return {"title": "Top Colleges Near You", "top_colleges": _staticData[city]};
+    }
+    return {"title": "Top Colleges Near You", "top_colleges": []};
   }
 }

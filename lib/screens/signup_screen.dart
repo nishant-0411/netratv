@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'mentor_signup_screen.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  final bool redirectToMentorSignup;
+
+  const SignupScreen({super.key, this.redirectToMentorSignup = false});
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
@@ -22,7 +25,6 @@ class _SignupScreenState extends State<SignupScreen> {
   bool otpSent = false;
   bool isLoading = false;
 
-  // Animation flags for form and OTP separately
   bool animationPlayedForm = false;
   bool animationPlayedOtp = false;
 
@@ -164,7 +166,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
     // Navigate without showing OTP again
     if (mounted) {
-      Navigator.pushNamedAndRemoveUntil(context, '/prequiz', (route) => false);
+      if (widget.redirectToMentorSignup) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const MentorSignupScreen()),
+          (route) => false,
+        );
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, '/prequiz', (route) => false);
+      }
     }
   }
 
