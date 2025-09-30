@@ -9,6 +9,8 @@ Welcome to **Netratv**, a modern student guidance platform that helps learners e
 ## ✨ Features  
 
 ✅ **Firebase Authentication** – Secure sign-in & user management  
+✅ **Roadmaps and Resources** – Personal roadmaps for you
+✅ **Scholarship** – Scholarships you can apply for
 ✅ **Personalized Chatbot** – Get guidance based on your interests  
 ✅ **Mentorship Support** – Connect with mentors for doubt-clearing sessions  
 ✅ **Community Hub** – Engage with like-minded peers & share knowledge  
@@ -26,7 +28,8 @@ Welcome to **Netratv**, a modern student guidance platform that helps learners e
 | Firebase Auth       | User authentication & secure sign-in         |  
 | Firebase Firestore  | Real-time database for user data & community |  
 | Firebase Storage    | Store media files (profile pics, posts)      |  
-| Dialogflow / Custom ML | Personalized chatbot system               |  
+| Dialogflow          | Personalized chatbot system                  |  
+| Gemini Api          | Get personalised answers from gemini         |
 
 ---
 
