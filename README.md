@@ -32,19 +32,20 @@ Welcome to **Netratv**, a modern student guidance platform that helps learners e
 
 ## 📂 Project Structure  
 
-Netratv/
-├── lib/
-│ ├── main.dart # App entry point
-│ ├── screens/ # UI Screens (Home, Quiz, Chatbot, Community, etc.)
-│ ├── models/ # Data models (User, Mentor, Post, Quiz)
-│ ├── services/ # Firebase & chatbot integration
-│ ├── widgets/ # Reusable UI components
-│ └── utils/ # Helpers & constants
-│
-├── assets/ # Images, icons, quiz JSON, etc.
-├── android/ # Android-specific files
-├── ios/ # iOS-specific files
-└── pubspec.yaml # Dependencies
+```bash
+Netratv/  
+├── lib/  
+│   ├── main.dart              # App entry point  
+│   ├── screens/               # UI Screens (Home, Quiz, Chatbot, Community, etc.)  
+│   ├── models/                # Data models (User, Mentor, Post, Quiz)  
+│   ├── services/              # Firebase & chatbot integration  
+│   ├── widgets/               # Reusable UI components  
+│   └── utils/                 # Helpers & constants  
+│  
+├── assets/                    # Images, icons, quiz JSON, etc.  
+├── android/                   # Android-specific files  
+├── ios/                       # iOS-specific files  
+└── pubspec.yaml               # Dependencies  
 
 
 ---
