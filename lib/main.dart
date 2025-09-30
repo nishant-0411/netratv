@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'firebase_options.dart';
 
 import 'screens/pre_quiz_intro_screen.dart';
@@ -23,8 +22,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Gemini.init(apiKey: "AIzaSyBtAmvGBKCjMEGMIiFpil3pbPnieNu8gEo");
-
   runApp(const MyApp());
 }
 
@@ -36,9 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Netratv',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const AuthWrapper(),
       routes: {
         '/welcome': (context) => const WelcomeScreen(),

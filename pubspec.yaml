@@ -43,7 +43,7 @@ dependencies:
   url_launcher: ^6.0.9
   geolocator: ^10.1.0
   xml: ^6.6.1
-  flutter_gemini: ^3.0.0
+  http: ^1.2.1
 
 
 dev_dependencies:

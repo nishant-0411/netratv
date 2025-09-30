@@ -1,8 +1,8 @@
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'dart:developer';
+import 'package:netratv/services/gemini_api_service.dart';
 
 class ScholarshipService {
-  final Gemini _gemini = Gemini.instance;
+  final GeminiApiService _api = GeminiApiService();
 
   Future<String> getScholarships({
     required String state,
@@ -33,9 +33,10 @@ Instructions:
 - Tone: neutral Indian English; concise and practical.
 """;
 
-      final response = await _gemini.prompt(parts: [Part.text(prompt)]);
-      return response?.output ??
-          "No scholarships found. Try adjusting criteria.";
+      final response = await _api.generateText(prompt: prompt);
+      return response.isEmpty
+          ? "No scholarships found. Try adjusting criteria."
+          : response;
     } catch (e) {
       log("❌ ScholarshipService error: $e");
       return "❌ Error fetching scholarships: $e";

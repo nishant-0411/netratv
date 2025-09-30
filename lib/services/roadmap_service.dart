@@ -1,8 +1,8 @@
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'dart:developer';
+import 'package:netratv/services/gemini_api_service.dart';
 
 class RoadmapService {
-  final Gemini _gemini = Gemini.instance;
+  final GeminiApiService _api = GeminiApiService();
 
   Future<String> getRoadmap(String career) async {
     try {
@@ -24,10 +24,10 @@ Requirements:
 Deliver only Markdown. Avoid disclaimers.
 """;
 
-      final response = await _gemini.prompt(parts: [Part.text(prompt)]);
-
-      return response?.output ??
-          "⚠️ No roadmap generated. Try a different career keyword.";
+      final response = await _api.generateText(prompt: prompt);
+      return response.isEmpty
+          ? "⚠️ No roadmap generated. Try a different career keyword."
+          : response;
     } catch (e) {
       log("❌ RoadmapService error: $e");
       return "❌ Error fetching roadmap: $e";

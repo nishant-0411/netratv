@@ -1,32 +1,24 @@
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'dart:developer';
+import 'package:netratv/services/gemini_api_service.dart';
 
 class ChatService {
-  final Gemini _gemini = Gemini.instance;
+  final GeminiApiService _api = GeminiApiService();
 
   Future<String> sendMessage(List<Map<String, String>> history) async {
     try {
-      final response = await _gemini.chat(
-        history.map((msg) {
-          return Content(
-            role: msg['role']!,
-            parts: [Part.text(msg['text']!)],
-          );
-        }).toList(),
-      );
-
-      if (response != null &&
-          response.content != null &&
-          response.content!.parts != null &&
-          response.content!.parts!.isNotEmpty) {
-        final lastPart = response.content!.parts!.last;
-        if (lastPart is TextPart) {
-          return lastPart.text;
-        }
+      // Build a simple transcript to preserve some context
+      final buffer = StringBuffer();
+      for (final m in history) {
+        final role = (m['role'] == 'assistant') ? 'Assistant' : 'User';
+        final text = m['text'] ?? '';
+        buffer.writeln('$role: $text\n');
       }
 
-      log("⚠️ No valid text part found: ${response?.toString()}");
-      return "⚠️ No valid text response from model.";
+      final output = await _api.generateText(prompt: buffer.toString());
+      if (output.trim().isEmpty) {
+        return "⚠️ No valid text response from model.";
+      }
+      return output;
     } catch (e) {
       log("❌ ChatService error: $e");
       return "⚠️ An error occurred: $e";

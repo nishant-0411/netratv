@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:netratv/services/gemini_api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +21,7 @@ class ChatbotScreen extends StatefulWidget {
 }
 
 class _ChatbotScreenState extends State<ChatbotScreen> {
+  final GeminiApiService _api = GeminiApiService();
   final TextEditingController _inputController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [];
@@ -138,16 +139,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         }
       }
 
-      final response = await Gemini.instance.prompt(
-        parts: [Part.text(buffer.toString())],
-      );
-      final aiText = response?.output?.trim();
+      final aiText = await _api.generateText(prompt: buffer.toString());
 
       setState(() {
         _messages.add(
           _ChatMessage(
             role: 'assistant',
-            content: aiText == null || aiText.isEmpty
+            content: aiText.isEmpty
                 ? 'Sorry, I could not generate a response.'
                 : aiText,
           ),
